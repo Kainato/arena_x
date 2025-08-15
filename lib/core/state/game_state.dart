@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+
 import '../enum/item_type.dart';
-import '../models/player.dart';
 import '../models/item.dart';
+import '../models/player.dart';
 import '../services/battle_service.dart';
-import '../services/loot_service.dart';
 import '../services/cooldown_service.dart';
+import '../services/loot_service.dart';
 
 class GameState extends ChangeNotifier {
   late Player player;
@@ -28,9 +31,22 @@ class GameState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Timer? _cooldownTimer;
+
+  void _startCooldownTicker() {
+    _cooldownTimer?.cancel();
+    _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (canExplore) {
+        _cooldownTimer?.cancel();
+      }
+      notifyListeners();
+    });
+  }
+
   (List<String> log, bool ended) exploreAndBattle() {
     if (!canExplore) return (['Calma! Ação em cooldown.'], true);
     cooldowns.setCooldown(_cdKeyExplore, const Duration(seconds: 15));
+    _startCooldownTicker(); // <-- Adicione esta linha
 
     final (monster, _) = battle.spawnFor(player);
     final result = battle.fight(player, monster);
