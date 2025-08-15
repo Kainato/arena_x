@@ -16,7 +16,7 @@ class WdScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         child: IndexedStack(index: currentIndex, children: body),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -31,7 +31,7 @@ class WdScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: Padding(padding: const EdgeInsets.all(16.0), child: body),
+      body: Padding(padding: const EdgeInsets.all(12.0), child: body),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:arena_x/utils/widgets/wd_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +11,8 @@ class ShopRead extends StatelessWidget {
     final game = context.watch<GameState>();
     final catalog = game.loot.getCatalog();
 
-    return WdScaffold(
-      title: 'Loja',
-      body: ListView.separated(
-        padding: const EdgeInsets.all(16),
+    return Expanded(
+      child: ListView.separated(
         itemBuilder: (_, i) {
           final it = catalog[i];
           return ListTile(
