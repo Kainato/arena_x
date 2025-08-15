@@ -8,6 +8,15 @@ class SettingRead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppState a = context.watch<AppState>();
+    // final List<MaterialColor> materialColors = [
+    //   Colors.red,
+    //   Colors.green,
+    //   Colors.blue,
+    //   Colors.yellow,
+    //   Colors.orange,
+    //   Colors.purple,
+    //   Colors.teal,
+    // ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,6 +28,27 @@ class SettingRead extends StatelessWidget {
             a.toggleTheme();
           },
         ),
+        Divider(),
+        // BlockPicker(
+        //   pickerColor: a.primaryColor,
+        //   availableColors: [
+        //     Colors.red,
+        //     Colors.green,
+        //     Colors.blue,
+        //     Colors.yellow,
+        //     Colors.orange,
+        //     Colors.purple,
+        //     Colors.teal,
+        //   ],
+        //   onColorChanged: (Color color) {
+        //     // Converta Color para MaterialColor
+        //     final materialColor = materialColors.firstWhere(
+        //       (mc) => mc == color,
+        //       orElse: () => Colors.teal,
+        //     );
+        //     a.setPrimaryColor(materialColor);
+        //   },
+        // ),
       ],
     );
   }

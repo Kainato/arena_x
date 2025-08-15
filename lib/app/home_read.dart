@@ -18,7 +18,7 @@ class HomeRead extends StatelessWidget {
       title: 'EPIC-like RPG',
       currentIndex: game.indexTab,
       onTap: (i) => game.setIndex(i),
-      body: [const StatusRead(), const ShopRead(), SettingRead()],
+      body: const [StatusRead(), ShopRead(), SettingRead()],
       bottomNavigationBar: [
         BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'Início'),
         BottomNavigationBarItem(icon: const Icon(Icons.store), label: 'Loja'),

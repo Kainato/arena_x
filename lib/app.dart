@@ -19,7 +19,10 @@ class MainApp extends StatelessWidget {
           return MaterialApp(
             title: 'EPIC-like RPG',
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+              primarySwatch: appState.primaryColor,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: appState.primaryColor,
+              ),
               useMaterial3: true,
             ),
             darkTheme: ThemeData.dark(),

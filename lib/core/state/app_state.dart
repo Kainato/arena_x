@@ -38,4 +38,13 @@ class AppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  MaterialColor _primaryColor = Colors.teal;
+
+  MaterialColor get primaryColor => _primaryColor;
+
+  void setPrimaryColor(MaterialColor color) {
+    _primaryColor = color;
+    notifyListeners();
+  }
 }
