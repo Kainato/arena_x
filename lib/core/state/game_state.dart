@@ -1,0 +1,83 @@
+import 'package:flutter/foundation.dart';
+import '../enum/item_type.dart';
+import '../models/player.dart';
+import '../models/item.dart';
+import '../services/battle_service.dart';
+import '../services/loot_service.dart';
+import '../services/cooldown_service.dart';
+
+class GameState extends ChangeNotifier {
+  late Player player;
+  final battle = BattleService();
+  final loot = LootService();
+  final cooldowns = CooldownService();
+
+  void bootstrap() {
+    // Placeholder de usuário local — trocável por Firebase Auth + Firestore
+    player = Player(id: 'local', name: 'Aventureiro');
+  }
+
+  // ignore: prefer_final_fields
+  String _cdKeyExplore = 'cd_explore';
+
+  Duration get exploreTimeLeft => cooldowns.timeLeft(_cdKeyExplore);
+  bool get canExplore => cooldowns.isReady(_cdKeyExplore);
+
+  void healSmall() {
+    player.hp = (player.hp + 10).clamp(0, player.maxHp);
+    notifyListeners();
+  }
+
+  (List<String> log, bool ended) exploreAndBattle() {
+    if (!canExplore) return (['Calma! Ação em cooldown.'], true);
+    cooldowns.setCooldown(_cdKeyExplore, const Duration(seconds: 15));
+
+    final (monster, _) = battle.spawnFor(player);
+    final result = battle.fight(player, monster);
+
+    final log = <String>[];
+    for (final e in result.log) {
+      log.add(e.text);
+    }
+
+    if (result.playerWon) {
+      player.addXp(result.xpGained);
+      player.gold += result.goldGained;
+      final drop = loot.rollMonsterDrop(player.level);
+      if (drop != null) {
+        player.inventory.add(drop);
+        log.add('Você ganhou loot: ${drop.name}!');
+      }
+      log.add('Vitória! +${result.xpGained} XP, +${result.goldGained} ouro.');
+    } else {
+      // Penalidade leve
+      player.gold = (player.gold - 5).clamp(0, 999999);
+      player.hp = (player.maxHp * 0.6).floor();
+      log.add(
+        'Derrota… Você perdeu um pouco de ouro e se recuperou parcialmente.',
+      );
+    }
+
+    notifyListeners();
+    return (log, true);
+  }
+
+  void equip(Item item) {
+    if (!player.inventory.contains(item)) return;
+    switch (item.type) {
+      case ItemType.weapon:
+        player.equippedWeapon = item;
+        break;
+      case ItemType.armor:
+        player.equippedArmor = item;
+        break;
+      case ItemType.consumable:
+        if (item.heal > 0) {
+          player.hp = (player.hp + item.heal).clamp(0, player.maxHp);
+          player.inventory.remove(item);
+        }
+        break;
+    }
+    notifyListeners();
+  }
+}
