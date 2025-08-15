@@ -11,9 +11,9 @@ import '../services/loot_service.dart';
 
 class GameState extends ChangeNotifier {
   late Player player;
-  final battle = BattleService();
-  final loot = LootService();
-  final cooldowns = CooldownService();
+  final BattleService battle = BattleService();
+  final LootService loot = LootService();
+  final CooldownService cooldowns = CooldownService();
 
   void bootstrap() {
     // Placeholder de usuário local — trocável por Firebase Auth + Firestore
@@ -26,9 +26,17 @@ class GameState extends ChangeNotifier {
   Duration get exploreTimeLeft => cooldowns.timeLeft(_cdKeyExplore);
   bool get canExplore => cooldowns.isReady(_cdKeyExplore);
 
+  bool _healBeforeBattle = false;
+
+  bool get healBeforeBattle => _healBeforeBattle;
+
   void healSmall() {
-    player.hp = (player.hp + 10).clamp(0, player.maxHp);
-    notifyListeners();
+    if (healBeforeBattle) {
+      if (player.hp >= player.maxHp) return;
+      player.hp = (player.hp + 10).clamp(0, player.maxHp);
+      _healBeforeBattle = false;
+      notifyListeners();
+    }
   }
 
   Timer? _cooldownTimer;
@@ -73,6 +81,8 @@ class GameState extends ChangeNotifier {
         'Derrota… Você perdeu um pouco de ouro e se recuperou parcialmente.',
       );
     }
+
+    _healBeforeBattle = true;
 
     notifyListeners();
     return (log, true);
