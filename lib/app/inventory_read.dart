@@ -14,7 +14,7 @@ class InventoryRead extends StatelessWidget {
     final game = context.watch<GameState>();
     final items = game.player.inventory;
 
-    return WDScaffold(
+    return WdScaffold(
       title: 'Inventário',
       body: ListView.separated(
         padding: const EdgeInsets.all(16),

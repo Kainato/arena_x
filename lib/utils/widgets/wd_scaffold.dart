@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class WDScaffold extends StatelessWidget {
+class WdScaffold extends StatelessWidget {
   final String title;
   final Widget body;
 
-  const WDScaffold({super.key, required this.title, required this.body});
+  const WdScaffold({super.key, required this.title, required this.body});
 
   static Scaffold bottomNavigation({
     required String title,

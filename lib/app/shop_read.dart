@@ -12,7 +12,7 @@ class ShopRead extends StatelessWidget {
     final game = context.watch<GameState>();
     final catalog = game.loot.getCatalog();
 
-    return WDScaffold(
+    return WdScaffold(
       title: 'Loja',
       body: ListView.separated(
         padding: const EdgeInsets.all(16),

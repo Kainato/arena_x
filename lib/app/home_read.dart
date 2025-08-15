@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/state/game_state.dart';
 import '../core/models/player.dart';
+import '../utils/widgets/wd_chip.dart';
 import '../utils/widgets/wd_scaffold.dart';
 
 class HomeRead extends StatelessWidget {
@@ -16,7 +17,7 @@ class HomeRead extends StatelessWidget {
     final GameState game = context.watch<GameState>();
     final Player p = game.player;
 
-    return WDScaffold.bottomNavigation(
+    return WdScaffold.bottomNavigation(
       title: 'EPIC-like RPG',
       currentIndex: game.indexTab,
       body: [
@@ -29,12 +30,36 @@ class HomeRead extends StatelessWidget {
               spacing: 16,
               runSpacing: 8,
               children: [
-                _StatChip(label: 'Nível', value: p.level.toString()),
-                _StatChip(label: 'XP', value: '${p.xp}/${p.xpToNext}'),
-                _StatChip(label: 'HP', value: '${p.hp}/${p.maxHp}'),
-                _StatChip(label: 'ATK', value: p.totalAttack.toString()),
-                _StatChip(label: 'DEF', value: p.totalDefense.toString()),
-                _StatChip(label: 'Ouro', value: p.gold.toString()),
+                WdChip.value(
+                  label: 'Nível',
+                  value: p.level.toString(),
+                  avatar: Icon(Icons.person),
+                ),
+                WdChip.value(
+                  label: 'XP',
+                  value: '${p.xp}/${p.xpToNext}',
+                  avatar: Icon(Icons.star),
+                ),
+                WdChip.value(
+                  label: 'HP',
+                  value: '${p.hp}/${p.maxHp}',
+                  avatar: Icon(Icons.favorite),
+                ),
+                WdChip.value(
+                  label: 'ATK',
+                  value: p.totalAttack.toString(),
+                  avatar: Icon(Icons.circle_outlined),
+                ),
+                WdChip.value(
+                  label: 'DEF',
+                  value: p.totalDefense.toString(),
+                  avatar: Icon(Icons.shield),
+                ),
+                WdChip.value(
+                  label: 'Ouro',
+                  value: p.gold.toString(),
+                  avatar: Icon(Icons.monetization_on),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -90,16 +115,5 @@ class HomeRead extends StatelessWidget {
         BottomNavigationBarItem(icon: const Icon(Icons.store), label: 'Loja'),
       ],
     );
-  }
-}
-
-class _StatChip extends StatelessWidget {
-  final String label;
-  final String value;
-  const _StatChip({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(label: Text('$label: $value'));
   }
 }
