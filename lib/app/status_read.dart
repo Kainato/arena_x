@@ -1,4 +1,5 @@
 import 'package:arena_x/app/battle_read.dart';
+import 'package:arena_x/app/inventory_read.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class StatusRead extends StatelessWidget {
         Wrap(
           spacing: 16,
           runSpacing: 8,
+          alignment: WrapAlignment.center,
           children: [
             WdChip.value(
               label: 'Nível',
@@ -52,7 +54,18 @@ class StatusRead extends StatelessWidget {
             ),
           ],
         ),
-        const Spacer(),
+        SizedBox(height: 16.0),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).colorScheme.primary),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: const InventoryRead(),
+          ),
+        ),
+        SizedBox(height: 16.0),
         Row(
           children: [
             Expanded(
