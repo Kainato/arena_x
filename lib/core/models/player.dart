@@ -26,7 +26,7 @@ class Player {
     this.hp = 40,
     this.attack = 6,
     this.defense = 2,
-    this.gold = 0,
+    this.gold = 50,
     List<Item>? inventory,
   }) : inventory = inventory ?? [];
 

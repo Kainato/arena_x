@@ -1,4 +1,3 @@
-import 'package:arena_x/utils/widgets/wd_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,25 +11,28 @@ class InventoryRead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final game = context.watch<GameState>();
-    final items = game.player.inventory;
+    final List<Item> items = game.player.inventory;
 
-    return WdScaffold(
-      title: 'Inventário',
-      body: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (_, i) {
-          final Item it = items[i];
-          return ListTile(
-            title: Text(it.name),
-            subtitle: Text(
-              '${it.type.name.toUpperCase()} • ${it.rarity.name.toUpperCase()}',
-            ),
-            trailing: _ActionButton(item: it),
-          );
-        },
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: items.length,
-      ),
+    return Builder(
+      builder: (context) {
+        if (items.isEmpty) {
+          return Center(child: Text('Seu inventário está vazio!'));
+        }
+        return ListView.separated(
+          separatorBuilder: (_, __) => const Divider(),
+          itemCount: items.length,
+          itemBuilder: (_, i) {
+            final Item it = items[i];
+            return ListTile(
+              title: Text(it.name),
+              subtitle: Text(
+                '${it.type.name.toUpperCase()} • ${it.rarity.name.toUpperCase()}',
+              ),
+              trailing: _ActionButton(item: it),
+            );
+          },
+        );
+      },
     );
   }
 }
