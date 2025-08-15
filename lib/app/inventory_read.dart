@@ -1,3 +1,4 @@
+import 'package:arena_x/utils/widgets/wd_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +14,8 @@ class InventoryRead extends StatelessWidget {
     final game = context.watch<GameState>();
     final items = game.player.inventory;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Inventário')),
+    return WDScaffold(
+      title: 'Inventário',
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemBuilder: (_, i) {

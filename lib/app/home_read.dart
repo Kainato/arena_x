@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/state/game_state.dart';
 import '../core/models/player.dart';
+import '../utils/widgets/wd_scaffold.dart';
 
 class HomeRead extends StatelessWidget {
   const HomeRead({super.key});
@@ -15,11 +16,11 @@ class HomeRead extends StatelessWidget {
     final GameState game = context.watch<GameState>();
     final Player p = game.player;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('EPIC-like RPG')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+    return WDScaffold.bottomNavigation(
+      title: 'EPIC-like RPG',
+      currentIndex: game.indexTab,
+      body: [
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Olá, ${p.name}!'),
@@ -69,32 +70,6 @@ class HomeRead extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const InventoryRead()),
-                    ),
-                    icon: const Icon(Icons.inventory_2),
-                    label: const Text('Inventário'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const ShopRead()),
-                    ),
-                    icon: const Icon(Icons.store),
-                    label: const Text('Loja'),
-                  ),
-                ),
-              ],
-            ),
             const Spacer(),
             const Text(
               'Dica: equipe armas/armaduras do inventário para aumentar ATK/DEF.',
@@ -102,7 +77,18 @@ class HomeRead extends StatelessWidget {
             ),
           ],
         ),
-      ),
+        const InventoryRead(),
+        const ShopRead(),
+      ],
+      onTap: (i) => game.setIndex(i),
+      bottomNavigationBar: [
+        BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'Início'),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.inventory_2),
+          label: 'Inventário',
+        ),
+        BottomNavigationBarItem(icon: const Icon(Icons.store), label: 'Loja'),
+      ],
     );
   }
 }

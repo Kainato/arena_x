@@ -1,3 +1,4 @@
+import 'package:arena_x/utils/widgets/wd_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +12,8 @@ class ShopRead extends StatelessWidget {
     final game = context.watch<GameState>();
     final catalog = game.loot.getCatalog();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Loja')),
+    return WDScaffold(
+      title: 'Loja',
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemBuilder: (_, i) {

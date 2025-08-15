@@ -96,4 +96,15 @@ class GameState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  int _indexTab = 0;
+
+  int get indexTab => _indexTab;
+
+  void setIndex(int i) {
+    if (_indexTab != i) {
+      _indexTab = i;
+      notifyListeners();
+    }
+  }
 }
