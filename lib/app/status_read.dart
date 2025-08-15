@@ -16,8 +16,6 @@ class StatusRead extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Olá, ${p.name}!'),
-        const SizedBox(height: 8),
         Wrap(
           spacing: 16,
           runSpacing: 8,
@@ -54,7 +52,7 @@ class StatusRead extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const Spacer(),
         Row(
           children: [
             Expanded(
@@ -86,11 +84,6 @@ class StatusRead extends StatelessWidget {
               icon: const Icon(Icons.healing),
             ),
           ],
-        ),
-        const Spacer(),
-        const Text(
-          'Dica: equipe armas/armaduras do inventário para aumentar ATK/DEF.',
-          style: TextStyle(fontStyle: FontStyle.italic),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:arena_x/utils/widgets/wd_appbar.dart';
 import 'package:flutter/material.dart';
 
 class WdScaffold extends StatelessWidget {
@@ -14,7 +15,7 @@ class WdScaffold extends StatelessWidget {
     required ValueChanged<int> onTap,
   }) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: WdAppbar(),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: IndexedStack(index: currentIndex, children: body),
@@ -30,7 +31,7 @@ class WdScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: WdAppbar(),
       body: Padding(padding: const EdgeInsets.all(12.0), child: body),
     );
   }
