@@ -1,4 +1,5 @@
 import 'package:arena_x/app/home_read.dart';
+import 'package:arena_x/core/state/app_state.dart';
 import 'package:arena_x/core/state/game_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,14 +12,21 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => GameState()..bootstrap()),
+        ChangeNotifierProvider(create: (_) => AppState()),
       ],
-      child: MaterialApp(
-        title: 'EPIC-like RPG',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-          useMaterial3: true,
-        ),
-        home: const HomeRead(),
+      child: Consumer<AppState>(
+        builder: (context, appState, child) {
+          return MaterialApp(
+            title: 'EPIC-like RPG',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+              useMaterial3: true,
+            ),
+            darkTheme: ThemeData.dark(),
+            themeMode: appState.themeMode,
+            home: const HomeRead(),
+          );
+        },
       ),
     );
   }
