@@ -11,23 +11,29 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => GameState()..bootstrap()),
         ChangeNotifierProvider(create: (_) => AppState()),
+        ChangeNotifierProvider(create: (_) => GameState()..bootstrap()),
       ],
       child: Consumer<AppState>(
-        builder: (context, appState, child) {
+        builder: (BuildContext context, AppState a, Widget? child) {
           return MaterialApp(
             title: 'EPIC-like RPG',
             theme: ThemeData(
-              primarySwatch: appState.primaryColor,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: appState.primaryColor,
-              ),
               useMaterial3: true,
+              primarySwatch: a.primaryColor,
+              colorScheme: ColorScheme.fromSeed(seedColor: a.primaryColor),
             ),
             darkTheme: ThemeData.dark(),
-            themeMode: appState.themeMode,
-            home: const HomeRead(),
+            themeMode: a.themeMode,
+            home: Builder(
+              builder: (context) {
+                if (context.read<GameState>().isLoadingGame) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return const HomeRead();
+                }
+              },
+            ),
           );
         },
       ),

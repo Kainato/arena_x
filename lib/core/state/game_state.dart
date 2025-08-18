@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../enum/cache_keys.dart';
@@ -16,28 +16,79 @@ class GameState extends ChangeNotifier {
   final BattleService battle = BattleService();
   final LootService loot = LootService();
   final CooldownService cooldowns = CooldownService();
+  bool _isLoadingGame = true;
+  bool get isLoadingGame => _isLoadingGame;
 
   /// Inicializa o estado do jogo, incluindo o jogador e os cooldowns
   /// Isso deve ser chamado no início do aplicativo para garantir que o estado esteja pronto.
   Future<void> bootstrap() async {
+    // Inicia o estado de carregamento do jogo
+    changeLoadingGame(value: true);
     // Carrega o estado do jogador do cache
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Placeholder de usuário local — trocável por Firebase Auth + Firestore
     player = Player(
       id: 'local',
-      name: prefs.getString(CacheKeys.jogador.key) ?? 'Aventureiro',
+      name: prefs.getString(CacheKeys.jogador.key) ?? CacheKeys.jogador.key,
       level: prefs.getInt(CacheKeys.nivel.key) ?? 1,
       xp: prefs.getInt(CacheKeys.xp.key) ?? 0,
       gold: prefs.getInt(CacheKeys.ouro.key) ?? 50,
     );
     // Nome do jogador
-    player.name = prefs.getString(CacheKeys.jogador.key) ?? 'Aventureiro';
+    prefs.setString(CacheKeys.jogador.key, player.name);
+    // Prepara o controlador de texto para o nome do jogador
+    playerNameController.text = player.name;
     // Nível do jogador
     prefs.setInt(CacheKeys.nivel.key, player.level);
     // XP do jogador
     prefs.setInt(CacheKeys.xp.key, player.xp);
     // Ouro do jogador
     prefs.setInt(CacheKeys.ouro.key, player.gold);
+    // Finaliza o estado de carregamento do jogo
+    changeLoadingGame(value: false);
+  }
+
+  /// Altera o estado de carregamento do jogo
+  /// Use isso para indicar que o jogo está carregando ou não.
+  void changeLoadingGame({bool? value}) {
+    // Se o valor for nulo, mantém o estado atual
+    _isLoadingGame = value ?? _isLoadingGame;
+    // Notifica os ouvintes sobre a mudança de estado
+    notifyListeners();
+  }
+
+  TextEditingController playerNameController = TextEditingController();
+
+  /// Se o nome não for nulo e não estiver vazio, define o controlador de texto
+  /// Caso contrário, define um nome padrão
+  ///
+  /// Isso garante que o nome do jogador seja carregado corretamente na interface
+  /// e evita que o campo fique vazio.
+  Future<void> getPlayerName() async {
+    // Carrega o estado do jogador do cache
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Carrega o nome do jogador do cache
+    String? name = prefs.getString(CacheKeys.jogador.key);
+
+    // Se o nome não for nulo e não estiver vazio, define o controlador de texto
+    // Caso contrário, define um nome padrão
+    if (name != null && name.isNotEmpty) {
+      playerNameController.text = name;
+    } else {
+      playerNameController.text = CacheKeys.jogador.key;
+    }
+  }
+
+  /// Define o nome do jogador e salva no cache
+  Future<void> setPlayerName(String name) async {
+    // Carrega o estado do jogador do cache
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Altera o nome do objeto do jogador
+    player.name = name;
+    // Salva o nome no cache
+    prefs.setString(CacheKeys.jogador.key, name);
+    // Notifica os ouvintes sobre a mudança
+    notifyListeners();
   }
 
   // ignore: prefer_final_fields
