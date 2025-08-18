@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/state/game_state.dart';
+import '../core/enum/home_navigation.dart';
 import '../utils/widgets/wd_scaffold.dart';
 
 class HomeRead extends StatelessWidget {
@@ -20,11 +21,20 @@ class HomeRead extends StatelessWidget {
       onTap: (i) => game.setIndex(i),
       body: const [StatusRead(), ShopRead(), SettingRead()],
       bottomNavigationBar: [
-        BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'Início'),
-        BottomNavigationBarItem(icon: const Icon(Icons.store), label: 'Loja'),
         BottomNavigationBarItem(
-          icon: const Icon(Icons.settings),
-          label: 'Configurações',
+          activeIcon: Icon(HomeNavigation.adventure.activeIcon),
+          icon: Icon(HomeNavigation.adventure.icon),
+          label: HomeNavigation.adventure.title,
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(HomeNavigation.shop.activeIcon),
+          icon: Icon(HomeNavigation.shop.icon),
+          label: HomeNavigation.shop.title,
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(HomeNavigation.settings.activeIcon),
+          icon: Icon(HomeNavigation.settings.icon),
+          label: HomeNavigation.settings.title,
         ),
       ],
     );
