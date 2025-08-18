@@ -17,19 +17,24 @@ class GameState extends ChangeNotifier {
   final LootService loot = LootService();
   final CooldownService cooldowns = CooldownService();
 
+  /// Inicializa o estado do jogo, incluindo o jogador e os cooldowns
+  /// Isso deve ser chamado no início do aplicativo para garantir que o estado esteja pronto.
   Future<void> bootstrap() async {
-    // Placeholder de usuário local — trocável por Firebase Auth + Firestore
-    player = Player(id: 'local', name: 'Aventureiro');
     // Carrega o estado do jogador do cache
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Placeholder de usuário local — trocável por Firebase Auth + Firestore
+    player = Player(
+      id: 'local',
+      name: prefs.getString(CacheKeys.nome.key) ?? 'Aventureiro',
+      level: prefs.getInt(CacheKeys.nivel.key) ?? 1,
+      xp: prefs.getInt(CacheKeys.xp.key) ?? 0,
+      gold: prefs.getInt(CacheKeys.ouro.key) ?? 50,
+    );
     // Nível do jogador
-    player.level = prefs.getInt(CacheKeys.nivel.key) ?? 1;
     prefs.setInt(CacheKeys.nivel.key, player.level);
     // XP do jogador
-    player.xp = prefs.getInt(CacheKeys.xp.key) ?? 0;
     prefs.setInt(CacheKeys.xp.key, player.xp);
     // Ouro do jogador
-    player.gold = prefs.getInt(CacheKeys.ouro.key) ?? 50;
     prefs.setInt(CacheKeys.ouro.key, player.gold);
   }
 

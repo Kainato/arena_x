@@ -1,5 +1,6 @@
 /// Esse arquivo define uma enumeração para as chaves de cache usadas no aplicativo.
 enum CacheKeys {
+  nome,
   nivel,
   xp,
   ouro,
@@ -11,6 +12,8 @@ extension CacheKeysExtension on CacheKeys {
   /// Isso é usado para armazenar e recuperar valores do cache de forma consistente.
   String get key {
     switch (this) {
+      case CacheKeys.nome:
+        return 'Aventureiro';
       case CacheKeys.nivel:
         return 'nivel';
       case CacheKeys.xp:
@@ -26,6 +29,8 @@ extension CacheKeysExtension on CacheKeys {
   /// Isso pode ser útil para depuração ou exibição ao usuário.
   String get description {
     switch (this) {
+      case CacheKeys.nome:
+        return 'Nome do jogador';
       case CacheKeys.nivel:
         return 'Nível do jogador';
       case CacheKeys.xp:
