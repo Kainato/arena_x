@@ -25,11 +25,13 @@ class GameState extends ChangeNotifier {
     // Placeholder de usuário local — trocável por Firebase Auth + Firestore
     player = Player(
       id: 'local',
-      name: prefs.getString(CacheKeys.nome.key) ?? 'Aventureiro',
+      name: prefs.getString(CacheKeys.jogador.key) ?? 'Aventureiro',
       level: prefs.getInt(CacheKeys.nivel.key) ?? 1,
       xp: prefs.getInt(CacheKeys.xp.key) ?? 0,
       gold: prefs.getInt(CacheKeys.ouro.key) ?? 50,
     );
+    // Nome do jogador
+    player.name = prefs.getString(CacheKeys.jogador.key) ?? 'Aventureiro';
     // Nível do jogador
     prefs.setInt(CacheKeys.nivel.key, player.level);
     // XP do jogador

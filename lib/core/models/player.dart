@@ -2,7 +2,7 @@ import 'item.dart';
 
 class Player {
   final String id;
-  final String name;
+  String name;
   int level;
   int xp;
   int xpToNext;
