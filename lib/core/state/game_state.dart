@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../enum/cache_keys.dart';
 import '../enum/item_type.dart';
 import '../models/item.dart';
 import '../models/player.dart';
@@ -15,9 +17,20 @@ class GameState extends ChangeNotifier {
   final LootService loot = LootService();
   final CooldownService cooldowns = CooldownService();
 
-  void bootstrap() {
+  Future<void> bootstrap() async {
     // Placeholder de usuário local — trocável por Firebase Auth + Firestore
     player = Player(id: 'local', name: 'Aventureiro');
+    // Carrega o estado do jogador do cache
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Nível do jogador
+    player.level = prefs.getInt(CacheKeys.nivel.key) ?? 1;
+    prefs.setInt(CacheKeys.nivel.key, player.level);
+    // XP do jogador
+    player.xp = prefs.getInt(CacheKeys.xp.key) ?? 0;
+    prefs.setInt(CacheKeys.xp.key, player.xp);
+    // Ouro do jogador
+    player.gold = prefs.getInt(CacheKeys.ouro.key) ?? 50;
+    prefs.setInt(CacheKeys.ouro.key, player.gold);
   }
 
   // ignore: prefer_final_fields
