@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app/battle_read.dart';
 import '../enum/cache_keys.dart';
 import '../enum/item_type.dart';
 import '../models/item.dart';
@@ -123,41 +124,17 @@ class GameState extends ChangeNotifier {
     });
   }
 
-  (List<String> log, bool ended) exploreAndBattle() {
-    if (!canExplore) return (['Calma! Ação em cooldown.'], true);
-    cooldowns.setCooldown(_cdKeyExplore, const Duration(seconds: 15));
-    _startCooldownTicker(); // <-- Adicione esta linha
+  void exploreAndBattle(BuildContext context) {
+    if (canExplore) {
+      cooldowns.setCooldown(_cdKeyExplore, const Duration(seconds: 15));
+      _startCooldownTicker();
 
-    final (monster, _) = battle.spawnFor(player);
-    final result = battle.fight(player, monster);
+      if (!context.mounted) return;
+      Navigator.push(context, MaterialPageRoute(builder: (_) => BattleRead()));
 
-    final log = <String>[];
-    for (final e in result.log) {
-      log.add(e.text);
+      _healBeforeBattle = true;
+      notifyListeners();
     }
-
-    if (result.playerWon) {
-      player.addXp(result.xpGained);
-      player.gold += result.goldGained;
-      final drop = loot.rollMonsterDrop(player.level);
-      if (drop != null) {
-        player.inventory.add(drop);
-        log.add('Você ganhou loot: ${drop.name}!');
-      }
-      log.add('Vitória! +${result.xpGained} XP, +${result.goldGained} ouro.');
-    } else {
-      // Penalidade leve
-      player.gold = (player.gold - 5).clamp(0, 999999);
-      player.hp = (player.maxHp * 0.6).floor();
-      log.add(
-        'Derrota… Você perdeu um pouco de ouro e se recuperou parcialmente.',
-      );
-    }
-
-    _healBeforeBattle = true;
-
-    notifyListeners();
-    return (log, true);
   }
 
   void comprarItem(BuildContext context, {required Item it}) {

@@ -1,4 +1,3 @@
-import 'package:arena_x/app/battle_read.dart';
 import 'package:arena_x/app/inventory_read.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,16 +70,7 @@ class StatusRead extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: game.canExplore
-                    ? () async {
-                        final (log, _) = game.exploreAndBattle();
-                        if (!context.mounted) return;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => BattleRead(log: log),
-                          ),
-                        );
-                      }
+                    ? () async => game.exploreAndBattle(context)
                     : null,
                 icon: const Icon(Icons.travel_explore),
                 label: Text(

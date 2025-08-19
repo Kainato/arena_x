@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../core/state/battle_state.dart';
+import '../utils/widgets/wd_scaffold.dart';
 
 class BattleRead extends StatelessWidget {
-  final List<String> log;
-  const BattleRead({super.key, required this.log});
+  const BattleRead({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Batalha')),
+    final b = context.watch<BattleState>();
+    b.timerBettweenRounds();
+    return WdScaffold(
+      title: 'Batalha',
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemBuilder: (_, i) => Text('• ${log[i]}'),
