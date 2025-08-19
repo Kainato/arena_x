@@ -43,16 +43,35 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final game = context.read<GameState>();
-    final isConsumable = item.type == ItemType.consumable;
+    final GameState game = context.read<GameState>();
+    final bool isConsumable = item.type == ItemType.consumable;
+    final bool isWeaponEquipped =
+        (item.type == ItemType.weapon && game.player.equippedWeapon == item);
+    final bool isArmorEquipped =
+        (item.type == ItemType.armor && game.player.equippedArmor == item);
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: (isConsumable || isWeaponEquipped || isArmorEquipped)
+            ? Colors.green
+            : null,
+      ),
+      child: Text(
+        isConsumable
+            ? 'Usar'
+            : (isWeaponEquipped || isArmorEquipped)
+            ? 'Equipado'
+            : 'Equipar',
+        style: TextStyle(
+          color: isWeaponEquipped || isArmorEquipped ? Colors.white : null,
+        ),
+      ),
       onPressed: () {
-        game.equip(item);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(isConsumable ? 'Consumido!' : 'Equipado!')),
-        );
+        if (isWeaponEquipped || isArmorEquipped) {
+          game.unequip(context, item: item);
+        } else {
+          game.equip(item);
+        }
       },
-      child: Text(isConsumable ? 'Usar' : 'Equipar'),
     );
   }
 }

@@ -194,6 +194,42 @@ class GameState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void unequip(BuildContext context, {required Item item}) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Aviso!'),
+        content: Text(
+          'Deseja realmente desequipar ${item.name}? Isso não removerá o item do inventário!',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            child: const Text('Desequipar'),
+            onPressed: () {
+              Navigator.pop(context);
+              if (!player.inventory.contains(item)) return;
+              switch (item.type) {
+                case ItemType.weapon:
+                  player.equippedWeapon = null;
+                  break;
+                case ItemType.armor:
+                  player.equippedArmor = null;
+                  break;
+                case ItemType.consumable:
+                  break;
+              }
+              notifyListeners();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   int _indexTab = 0;
 
   int get indexTab => _indexTab;
