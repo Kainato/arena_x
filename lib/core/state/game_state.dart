@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../enum/cache_keys.dart';
@@ -57,6 +57,7 @@ class GameState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Controlador de texto para o nome do jogador
   TextEditingController playerNameController = TextEditingController();
 
   /// Se o nome não for nulo e não estiver vazio, define o controlador de texto
@@ -157,6 +158,21 @@ class GameState extends ChangeNotifier {
 
     notifyListeners();
     return (log, true);
+  }
+
+  void comprarItem(BuildContext context, {required Item it}) {
+    if (player.gold >= it.price) {
+      player.gold -= it.price;
+      player.inventory.add(it);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Item comprado: ${it.name}!')));
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ouro insuficiente para comprar ${it.name}!')),
+      );
+    }
   }
 
   void equip(Item item) {
