@@ -1,10 +1,10 @@
-import 'package:arena_x/app/inventory_read.dart';
+import 'package:arena_x/utils/feature/inventory.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/state/game_state.dart';
-import '../core/models/player.dart';
-import '../utils/widgets/wd_chip.dart';
+import '../../../core/state/game_state.dart';
+import '../../core/models/player.dart';
+import '../widgets/wd_chip.dart';
 
 class StatusRead extends StatelessWidget {
   const StatusRead({super.key});

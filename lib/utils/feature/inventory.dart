@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/models/item.dart';
-import '../../core/state/game_state.dart';
-import '../core/enum/item_type.dart';
+import '../../../core/models/item.dart';
+import '../../../core/state/game_state.dart';
+import '../../core/enum/item_type.dart';
 
 class InventoryRead extends StatelessWidget {
   const InventoryRead({super.key});

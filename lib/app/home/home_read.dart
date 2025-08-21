@@ -1,12 +1,12 @@
-import 'package:arena_x/app/setting_read.dart';
-import 'package:arena_x/app/shop_read.dart';
-import 'package:arena_x/app/status_read.dart';
+import 'package:arena_x/app/home/tab/setting_read.dart';
+import 'package:arena_x/app/home/tab/shop_read.dart';
+import 'package:arena_x/app/home/tab/status_read.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/state/game_state.dart';
-import '../core/enum/home_navigation.dart';
-import '../utils/widgets/wd_scaffold.dart';
+import '../../../core/state/game_state.dart';
+import '../../core/enum/home_navigation.dart';
+import '../../utils/widgets/wd_scaffold.dart';
 
 class HomeRead extends StatelessWidget {
   const HomeRead({super.key});

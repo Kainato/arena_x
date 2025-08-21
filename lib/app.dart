@@ -1,4 +1,4 @@
-import 'package:arena_x/app/home_read.dart';
+import 'package:arena_x/app/home/home_read.dart';
 import 'package:arena_x/core/state/app_state.dart';
 import 'package:arena_x/core/state/game_state.dart';
 import 'package:flutter/material.dart';
