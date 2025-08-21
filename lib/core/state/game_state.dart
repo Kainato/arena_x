@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:arena_x/core/state/battle_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app/battle_read.dart';
@@ -8,13 +10,11 @@ import '../enum/cache_keys.dart';
 import '../enum/item_type.dart';
 import '../models/item.dart';
 import '../models/player.dart';
-import '../services/battle_service.dart';
 import '../services/cooldown_service.dart';
 import '../services/loot_service.dart';
 
 class GameState extends ChangeNotifier {
   late Player player;
-  final BattleService battle = BattleService();
   final LootService loot = LootService();
   final CooldownService cooldowns = CooldownService();
   bool _isLoadingGame = true;
@@ -130,8 +130,15 @@ class GameState extends ChangeNotifier {
       _startCooldownTicker();
 
       if (!context.mounted) return;
-      Navigator.push(context, MaterialPageRoute(builder: (_) => BattleRead()));
-
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (context) => BattleState(context),
+            child: const BattleRead(),
+          ),
+        ),
+      );
       _healBeforeBattle = true;
       notifyListeners();
     }
