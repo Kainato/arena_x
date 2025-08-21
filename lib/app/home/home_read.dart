@@ -16,7 +16,7 @@ class HomeRead extends StatelessWidget {
     final GameState game = context.watch<GameState>();
 
     return WdScaffold.bottomNavigation(
-      title: 'EPIC-like RPG',
+      title: 'Arena X - RPG',
       currentIndex: game.indexTab,
       onTap: (i) => game.setIndex(i),
       body: const [StatusRead(), ShopRead(), SettingRead()],

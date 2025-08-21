@@ -1,4 +1,4 @@
-import 'package:arena_x/app/home/home_read.dart';
+import 'package:arena_x/app/redirect.dart';
 import 'package:arena_x/core/state/app_state.dart';
 import 'package:arena_x/core/state/game_state.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppState()),
-        ChangeNotifierProvider(create: (_) => GameState()..bootstrap()),
+        ChangeNotifierProvider(create: (_) => GameState()),
       ],
       child: Consumer<AppState>(
         builder: (BuildContext context, AppState a, Widget? child) {
@@ -25,15 +25,7 @@ class MainApp extends StatelessWidget {
             ),
             darkTheme: ThemeData.dark(),
             themeMode: a.themeMode,
-            home: Builder(
-              builder: (context) {
-                if (context.read<GameState>().isLoadingGame) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return const HomeRead();
-                }
-              },
-            ),
+            home: Redirect(),
           );
         },
       ),

@@ -47,6 +47,8 @@ class GameState extends ChangeNotifier {
     prefs.setInt(CacheKeys.ouro.key, player.gold);
     // Finaliza o estado de carregamento do jogo
     changeLoadingGame(value: false);
+    // Notifica os ouvintes sobre a mudança de estado
+    notifyListeners();
   }
 
   /// Altera o estado de carregamento do jogo
