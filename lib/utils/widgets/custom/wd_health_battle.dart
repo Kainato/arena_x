@@ -78,11 +78,21 @@ Widget _buildHealthBar({
           margin: const EdgeInsets.only(left: 12),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: actualHealthClamped / maxHealth,
-              backgroundColor: color.withOpacity(0.2),
-              valueColor: AlwaysStoppedAnimation<Color>(color),
-              minHeight: 16,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(
+                begin: 1.0,
+                end: actualHealthClamped / maxHealth,
+              ),
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+              builder: (context, value, child) {
+                return LinearProgressIndicator(
+                  value: value,
+                  backgroundColor: color.withValues(alpha: 0.3),
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                  minHeight: 16,
+                );
+              },
             ),
           ),
         ),
