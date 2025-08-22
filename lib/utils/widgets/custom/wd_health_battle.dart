@@ -114,5 +114,5 @@ Widget _buildHealthBar({
 
 /// Constrói o texto de saúde atual/max com estilo itálico
 Text _buildHealthText({required int actual, required int max}) {
-  return Text('$actual/$max', style: TextStyle(fontStyle: FontStyle.italic));
+  return Text('$actual/$max', style: const TextStyle(fontStyle: FontStyle.italic));
 }
