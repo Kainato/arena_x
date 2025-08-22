@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/state/game_state.dart';
 import '../../core/models/player.dart';
-import '../widgets/wd_chip.dart';
+import '../widgets/base/wd_chip.dart';
 
 class StatusRead extends StatelessWidget {
   const StatusRead({super.key});

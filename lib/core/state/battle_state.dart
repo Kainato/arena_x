@@ -46,6 +46,7 @@ class BattleState extends ChangeNotifier {
       name: 'Monstro Aleatório',
       level: player.level,
       hp: 10,
+      maxHp: 10,
       attack: 6,
       defense: 2,
       xpReward: 2,

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/state/game_state.dart';
 import '../../../core/models/item.dart';
-import '../../../utils/widgets/wd_chip.dart';
+import '../../../utils/widgets/base/wd_chip.dart';
 
 class ShopRead extends StatelessWidget {
   const ShopRead({super.key});
