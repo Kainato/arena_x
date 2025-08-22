@@ -20,7 +20,7 @@ class WdSwitchTheme extends StatelessWidget {
       subtitle: Text('Atual: ${a.themeMode.$2}'),
       value: a.darkMode,
       shape: RoundedRectangleBorder(
-        side: BorderSide(width: 0, color: Colors.transparent),
+        side: BorderSide.none,
         borderRadius: BorderRadius.circular(12.0),
       ),
       isThreeLine: true,
