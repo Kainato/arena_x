@@ -35,7 +35,7 @@ Future _dialogColorPicker(BuildContext context, AppState a) {
           children: a.materialColors.map((color) {
             return InkWell(
               onTap: () {
-                a.setPrimaryColor(color);
+                a.changePrimaryColor(color);
                 Navigator.of(dialogContext).pop();
               },
               child: CircleAvatar(
@@ -56,5 +56,5 @@ Future _dialogColorPicker(BuildContext context, AppState a) {
         ],
       );
     },
-  );
+  ).whenComplete(() => a.setPrimaryColor());
 }

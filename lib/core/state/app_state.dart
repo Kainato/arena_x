@@ -7,7 +7,8 @@ import 'package:hive/hive.dart';
 class AppState extends ChangeNotifier {
   /// Inicializa o estado do aplicativo e carrega as preferências salvas
   AppState() {
-    getTheme();
+    getThemeMode();
+    getThemeColor();
   }
 
   /// Variável para controlar o modo de tema (claro/escuro)
@@ -30,7 +31,7 @@ class AppState extends ChangeNotifier {
   }
 
   /// Carrega a preferência de tema salvo no cache ou usa o tema atual do sistema
-  Future<void> getTheme() async {
+  Future<void> getThemeMode() async {
     final Box appBox = Hive.box(BoxCacheKeys.app.id);
     bool? mode = appBox.get(CacheKeys.lightMode.key);
     if (mode != null) {
@@ -51,14 +52,36 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Obtém a cor primária salva no cache ou usa a cor padrão
+  Future<void> getThemeColor() async {
+    final Box appBox = Hive.box(BoxCacheKeys.app.id);
+    final int? colorValue = appBox.get(CacheKeys.primaryColor.key);
+    if (colorValue != null) {
+      // Procura na lista de cores disponíveis
+      final found = materialColors.firstWhere(
+        (mc) => mc.value == colorValue,
+        orElse: () => Colors.purple,
+      );
+      _primaryColor = found;
+    }
+    notifyListeners();
+  }
+
   MaterialColor _primaryColor = Colors.purple;
 
   MaterialColor get primaryColor => _primaryColor;
 
   List<MaterialColor> get materialColors => AppTheme(this).materialColors;
 
-  void setPrimaryColor(MaterialColor color) {
+  void changePrimaryColor(MaterialColor color) {
     _primaryColor = color;
     notifyListeners();
+  }
+
+  Future<void> setPrimaryColor() async {
+    await Hive.openBox(BoxCacheKeys.app.id);
+    final Box appBox = Hive.box(BoxCacheKeys.app.id);
+    await appBox.put(CacheKeys.primaryColor.key, _primaryColor.value);
+    appBox.close();
   }
 }

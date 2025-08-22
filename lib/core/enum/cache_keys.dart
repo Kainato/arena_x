@@ -6,6 +6,7 @@ enum CacheKeys {
   ouro,
   inventario,
   lightMode,
+  primaryColor,
 }
 
 extension CacheKeysExtension on CacheKeys {
@@ -25,25 +26,8 @@ extension CacheKeysExtension on CacheKeys {
         return 'inventario';
       case CacheKeys.lightMode:
         return 'lightMode';
-    }
-  }
-
-  /// Retorna uma descrição legível para cada chave de cache.
-  /// Isso pode ser útil para depuração ou exibição ao usuário.
-  String get description {
-    switch (this) {
-      case CacheKeys.jogador:
-        return 'Nome do jogador';
-      case CacheKeys.nivel:
-        return 'Nível do jogador';
-      case CacheKeys.xp:
-        return 'Experiência do jogador';
-      case CacheKeys.ouro:
-        return 'Ouro acumulado pelo jogador';
-      case CacheKeys.inventario:
-        return 'Itens no inventário do jogador';
-      case CacheKeys.lightMode:
-        return 'Preferência de modo claro/escuro';
+      case CacheKeys.primaryColor:
+        return 'primaryColor';
     }
   }
 }
