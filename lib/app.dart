@@ -1,6 +1,7 @@
 import 'package:arena_x/app/redirect.dart';
 import 'package:arena_x/core/state/app_state.dart';
 import 'package:arena_x/core/state/game_state.dart';
+import 'package:arena_x/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,20 +19,8 @@ class MainApp extends StatelessWidget {
         builder: (BuildContext context, AppState a, Widget? child) {
           return MaterialApp(
             title: 'EPIC-like RPG',
-            theme: ThemeData(
-              useMaterial3: true,
-              primarySwatch: a.primaryColor,
-              colorScheme: ColorScheme.fromSeed(seedColor: a.primaryColor),
-            ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              brightness: Brightness.dark,
-              primarySwatch: a.primaryColor,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: a.primaryColor,
-                brightness: Brightness.dark,
-              ),
-            ),
+            theme: AppTheme(a).theme,
+            darkTheme: AppTheme(a).theme,
             themeMode: a.themeMode.$1,
             home: Redirect(),
           );
