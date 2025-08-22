@@ -105,6 +105,8 @@ class GameState extends ChangeNotifier {
 
   bool get healBeforeBattle => _healBeforeBattle;
 
+  /// Cura o jogador antes da batalha, aumentando o HP em 10
+  /// Se o HP já estiver no máximo, não faz nada.
   void healSmall(BuildContext context) {
     if (healBeforeBattle) {
       if (player.hp >= player.maxHp) return;
