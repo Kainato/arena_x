@@ -3,6 +3,7 @@ class Monster {
   final String name;
   final int level;
   int hp;
+  final int maxHp;
   final int attack;
   final int defense;
   final int xpReward;
@@ -13,6 +14,7 @@ class Monster {
     required this.name,
     required this.level,
     required this.hp,
+    required this.maxHp,
     required this.attack,
     required this.defense,
     required this.xpReward,

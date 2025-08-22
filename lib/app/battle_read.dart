@@ -1,9 +1,10 @@
+import 'package:arena_x/utils/widgets/custom/wd_health_battle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../core/models/battle_step.dart';
 import '../core/state/battle_state.dart';
-import '../utils/widgets/wd_scaffold.dart';
+import '../utils/widgets/layout/wd_scaffold.dart';
 
 class BattleRead extends StatefulWidget {
   const BattleRead({super.key});
@@ -31,21 +32,23 @@ class _BattleReadState extends State<BattleRead> {
       title: 'Batalha',
       body: Column(
         children: [
-          Table(
-            border: TableBorder.all(),
+          Row(
             children: [
-              TableRow(
-                decoration: BoxDecoration(color: Colors.grey[300]),
-                children: [
-                  Text(b.player.name, textAlign: TextAlign.center),
-                  Text(b.currentMonster.name, textAlign: TextAlign.center),
-                ],
+              Flexible(
+                child: WdHealthBattle(
+                  title: b.player.name,
+                  actualHealth: b.playerHealth,
+                  maxHealth: b.player.maxHp,
+                  color: Colors.green,
+                ),
               ),
-              TableRow(
-                children: [
-                  Text(' ${b.playerHealth}', textAlign: TextAlign.center),
-                  Text(' ${b.monsterHealth}', textAlign: TextAlign.center),
-                ],
+              Flexible(
+                child: WdHealthBattle(
+                  title: b.currentMonster.name,
+                  actualHealth: b.monsterHealth,
+                  maxHealth: b.currentMonster.maxHp,
+                  color: Colors.red,
+                ),
               ),
             ],
           ),

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/state/game_state.dart';
 import '../../core/enum/home_navigation.dart';
-import '../../utils/widgets/wd_scaffold.dart';
+import '../../utils/widgets/layout/wd_scaffold.dart';
 
 class HomeRead extends StatelessWidget {
   const HomeRead({super.key});

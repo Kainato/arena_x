@@ -1,4 +1,4 @@
-import 'package:arena_x/utils/widgets/wd_appbar.dart';
+import 'package:arena_x/utils/widgets/layout/wd_appbar.dart';
 import 'package:flutter/material.dart';
 
 class WdScaffold extends StatelessWidget {
