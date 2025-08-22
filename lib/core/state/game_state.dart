@@ -105,12 +105,15 @@ class GameState extends ChangeNotifier {
 
   bool get healBeforeBattle => _healBeforeBattle;
 
-  void healSmall() {
+  void healSmall(BuildContext context) {
     if (healBeforeBattle) {
       if (player.hp >= player.maxHp) return;
       player.hp = (player.hp + 10).clamp(0, player.maxHp);
       _healBeforeBattle = false;
       notifyListeners();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Curado 10 HP!')));
     }
   }
 
