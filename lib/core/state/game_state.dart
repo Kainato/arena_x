@@ -111,9 +111,12 @@ class GameState extends ChangeNotifier {
       player.hp = (player.hp + 10).clamp(0, player.maxHp);
       _healBeforeBattle = false;
       notifyListeners();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Curado 10 HP!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Curado 10 HP!'),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
   }
 
