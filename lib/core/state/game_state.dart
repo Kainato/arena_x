@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:arena_x/core/state/battle_state.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app/battle_read.dart';
+import '../enum/box_cache_keys.dart';
 import '../enum/cache_keys.dart';
 import '../enum/item_type.dart';
 import '../models/item.dart';
@@ -26,25 +27,25 @@ class GameState extends ChangeNotifier {
     // Inicia o estado de carregamento do jogo
     changeLoadingGame(value: true);
     // Carrega o estado do jogador do cache
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Box playerBox = Hive.box(BoxCacheKeys.player.id);
     // Placeholder de usuário local — trocável por Firebase Auth + Firestore
     player = Player(
       id: 'local',
-      name: prefs.getString(CacheKeys.jogador.key) ?? CacheKeys.jogador.key,
-      level: prefs.getInt(CacheKeys.nivel.key) ?? 1,
-      xp: prefs.getInt(CacheKeys.xp.key) ?? 0,
-      gold: prefs.getInt(CacheKeys.ouro.key) ?? 50,
+      name: playerBox.get(CacheKeys.jogador.key) ?? CacheKeys.jogador.key,
+      level: playerBox.get(CacheKeys.nivel.key) ?? 1,
+      xp: playerBox.get(CacheKeys.xp.key) ?? 0,
+      gold: playerBox.get(CacheKeys.ouro.key) ?? 50,
     );
     // Nome do jogador
-    prefs.setString(CacheKeys.jogador.key, player.name);
+    playerBox.put(CacheKeys.jogador.key, player.name);
     // Prepara o controlador de texto para o nome do jogador
     playerNameController.text = player.name;
     // Nível do jogador
-    prefs.setInt(CacheKeys.nivel.key, player.level);
+    playerBox.put(CacheKeys.nivel.key, player.level);
     // XP do jogador
-    prefs.setInt(CacheKeys.xp.key, player.xp);
+    playerBox.put(CacheKeys.xp.key, player.xp);
     // Ouro do jogador
-    prefs.setInt(CacheKeys.ouro.key, player.gold);
+    playerBox.put(CacheKeys.ouro.key, player.gold);
     // Finaliza o estado de carregamento do jogo
     changeLoadingGame(value: false);
     // Notifica os ouvintes sobre a mudança de estado
@@ -70,9 +71,9 @@ class GameState extends ChangeNotifier {
   /// e evita que o campo fique vazio.
   Future<void> getPlayerName() async {
     // Carrega o estado do jogador do cache
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Box playerBox = Hive.box(BoxCacheKeys.player.id);
     // Carrega o nome do jogador do cache
-    String? name = prefs.getString(CacheKeys.jogador.key);
+    String? name = playerBox.get(CacheKeys.jogador.key);
 
     // Se o nome não for nulo e não estiver vazio, define o controlador de texto
     // Caso contrário, define um nome padrão
@@ -86,11 +87,11 @@ class GameState extends ChangeNotifier {
   /// Define o nome do jogador e salva no cache
   Future<void> setPlayerName(String name) async {
     // Carrega o estado do jogador do cache
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Box playerBox = Hive.box(BoxCacheKeys.player.id);
     // Altera o nome do objeto do jogador
     player.name = name;
     // Salva o nome no cache
-    prefs.setString(CacheKeys.jogador.key, name);
+    playerBox.put(CacheKeys.jogador.key, name);
     // Notifica os ouvintes sobre a mudança
     notifyListeners();
   }
