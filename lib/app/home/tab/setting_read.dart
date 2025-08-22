@@ -34,9 +34,9 @@ class SettingRead extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              spacing: 8.0,
               children: [
                 WdSwitchTheme(),
+                Divider(),
                 TextFormField(
                   controller: g.playerNameController,
                   decoration: InputDecoration(

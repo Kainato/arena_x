@@ -15,8 +15,11 @@ class AppTheme {
       useMaterial3: true,
       primarySwatch: a.primaryColor,
       brightness: a.darkMode ? Brightness.dark : Brightness.light,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: a.primaryColor,
+        brightness: a.darkMode ? Brightness.dark : Brightness.light,
+      ),
       cardTheme: CardThemeData(
-        // color: a.primaryColor.shade50,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),

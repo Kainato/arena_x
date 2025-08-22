@@ -21,8 +21,9 @@ class WdSwitchTheme extends StatelessWidget {
       value: a.darkMode,
       shape: RoundedRectangleBorder(
         side: BorderSide(width: 0, color: Colors.transparent),
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(12.0),
       ),
+      isThreeLine: true,
       thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
         if (a.darkMode) {
           return const Icon(Icons.nightlight_round);
