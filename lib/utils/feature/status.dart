@@ -82,7 +82,7 @@ class StatusRead extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             IconButton(
-              onPressed: game.healBeforeBattle ? () => game.healSmall() : null,
+              onPressed: game.healBeforeBattle ? () => game.healSmall(context) : null,
               tooltip: 'Curar 10 HP',
               icon: const Icon(Icons.healing),
             ),
