@@ -49,10 +49,10 @@ Row _buildTitle({required String title, String? subtitle}) {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
-        child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       if (subtitle != null)
-        Text(subtitle, style: TextStyle(fontStyle: FontStyle.italic)),
+        Text(subtitle, style: const TextStyle(fontStyle: FontStyle.italic)),
     ],
   );
 }
