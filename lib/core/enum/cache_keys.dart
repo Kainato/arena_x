@@ -5,6 +5,7 @@ enum CacheKeys {
   xp,
   ouro,
   inventario,
+  lightMode,
 }
 
 extension CacheKeysExtension on CacheKeys {
@@ -22,6 +23,8 @@ extension CacheKeysExtension on CacheKeys {
         return 'ouro';
       case CacheKeys.inventario:
         return 'inventario';
+      case CacheKeys.lightMode:
+        return 'lightMode';
     }
   }
 
@@ -39,6 +42,8 @@ extension CacheKeysExtension on CacheKeys {
         return 'Ouro acumulado pelo jogador';
       case CacheKeys.inventario:
         return 'Itens no inventário do jogador';
+      case CacheKeys.lightMode:
+        return 'Preferência de modo claro/escuro';
     }
   }
 }

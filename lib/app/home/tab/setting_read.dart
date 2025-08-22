@@ -24,8 +24,8 @@ class SettingRead extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SwitchListTile(
-          title: Text(a.themeName),
-          value: a.isDarkMode,
+          title: Text(a.themeMode.$2),
+          value: a.darkMode,
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: Theme.of(context).colorScheme.surfaceContainerHighest,

@@ -23,8 +23,16 @@ class MainApp extends StatelessWidget {
               primarySwatch: a.primaryColor,
               colorScheme: ColorScheme.fromSeed(seedColor: a.primaryColor),
             ),
-            darkTheme: ThemeData.dark(),
-            themeMode: a.themeMode,
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.dark,
+              primarySwatch: a.primaryColor,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: a.primaryColor,
+                brightness: Brightness.dark,
+              ),
+            ),
+            themeMode: a.themeMode.$1,
             home: Redirect(),
           );
         },
