@@ -2,7 +2,8 @@ import 'package:arena_x/core/state/game_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/widgets/base/wd_switch_theme.dart';
+import '../../../utils/widgets/custom/wd_color_theme.dart';
+import '../../../utils/widgets/custom/wd_switch_theme.dart';
 
 class SettingRead extends StatelessWidget {
   const SettingRead({super.key});
@@ -10,15 +11,6 @@ class SettingRead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GameState g = context.watch<GameState>();
-    // final List<MaterialColor> materialColors = [
-    //   Colors.red,
-    //   Colors.green,
-    //   Colors.blue,
-    //   Colors.yellow,
-    //   Colors.orange,
-    //   Colors.purple,
-    //   Colors.teal,
-    // ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,6 +28,8 @@ class SettingRead extends StatelessWidget {
             child: Column(
               children: [
                 WdSwitchTheme(),
+                Divider(),
+                WdColorTheme(),
                 Divider(),
                 TextFormField(
                   controller: g.playerNameController,

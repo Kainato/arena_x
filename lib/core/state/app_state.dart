@@ -1,4 +1,5 @@
 import 'package:arena_x/core/enum/cache_keys.dart';
+import 'package:arena_x/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,9 +50,11 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  MaterialColor _primaryColor = Colors.teal;
+  MaterialColor _primaryColor = Colors.purple;
 
   MaterialColor get primaryColor => _primaryColor;
+
+  List<MaterialColor> get materialColors => AppTheme(this).materialColors;
 
   void setPrimaryColor(MaterialColor color) {
     _primaryColor = color;
