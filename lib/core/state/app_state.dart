@@ -20,7 +20,7 @@ class AppState extends ChangeNotifier {
       : (ThemeMode.light, 'Modo Claro');
 
   /// Alterna entre o modo claro e escuro, salvando a preferência no cache
-  void toggleTheme() async {
+  Future<void> toggleTheme() async {
     _darkMode = !_darkMode;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(CacheKeys.lightMode.key, !_darkMode);
