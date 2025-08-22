@@ -103,7 +103,7 @@ Widget _buildHealthBar({
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(color: Colors.black, width: 2),
-            color: Colors.white, // opcional: fundo do círculo
+            color: Colors.white,
           ),
           child: Center(child: Icon(Icons.favorite, color: color, size: 20)),
         ),
