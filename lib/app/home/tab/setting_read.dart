@@ -1,14 +1,14 @@
-import 'package:arena_x/core/state/app_state.dart';
 import 'package:arena_x/core/state/game_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../utils/widgets/base/wd_switch_theme.dart';
 
 class SettingRead extends StatelessWidget {
   const SettingRead({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AppState a = context.watch<AppState>();
     final GameState g = context.watch<GameState>();
     // final List<MaterialColor> materialColors = [
     //   Colors.red,
@@ -21,46 +21,55 @@ class SettingRead extends StatelessWidget {
     // ];
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SwitchListTile(
-          title: Text(a.themeName),
-          value: a.isDarkMode,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            ),
-            borderRadius: BorderRadius.circular(8.0),
+        CircleAvatar(
+          radius: 40,
+          child: Text(
+            g.player.name.isNotEmpty ? g.player.name[0].toUpperCase() : 'A',
           ),
-          onChanged: (value) {
-            a.toggleTheme();
-          },
         ),
-        Divider(),
-        TextFormField(
-          controller: g.playerNameController,
-          decoration: InputDecoration(
-            labelText: 'Nome do jogador',
-            hintText: 'Digite o nome do jogador',
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              ),
-            ),
-          ),
-          onFieldSubmitted: (value) {
-            if (value.trim().isNotEmpty) {
-              g.setPlayerName(value);
-            } else {
-              g.getPlayerName();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('O nome do jogador não pode ser vazio!'),
+        SizedBox(height: 8.0),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                WdSwitchTheme(),
+                Divider(),
+                TextFormField(
+                  controller: g.playerNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Nome do jogador',
+                    hintText: 'Digite o nome do jogador',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
+                      ),
+                    ),
+                  ),
+                  onFieldSubmitted: (value) {
+                    if (value.trim().isNotEmpty) {
+                      g.setPlayerName(value);
+                    } else {
+                      g.getPlayerName();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'O nome do jogador não pode ser vazio!',
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
-              );
-            }
-          },
+              ],
+            ),
+          ),
         ),
+        SizedBox(height: 8.0),
         // BlockPicker(
         //   pickerColor: a.primaryColor,
         //   availableColors: [

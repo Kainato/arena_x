@@ -1,39 +1,49 @@
-import 'package:flutter/foundation.dart';
+import 'package:arena_x/core/enum/cache_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppState extends ChangeNotifier {
-  bool _themeIsDark = false;
-
-  bool get isDarkMode => _themeIsDark;
-
-  String get themeName {
-    return _themeIsDark ? 'Modo Escuro' : 'Modo Claro';
+  /// Inicializa o estado do aplicativo e carrega as preferências salvas
+  AppState() {
+    getTheme();
   }
 
-  ThemeMode get themeMode {
-    return _themeIsDark ? ThemeMode.dark : ThemeMode.light;
-  }
+  /// Variável para controlar o modo de tema (claro/escuro)
+  bool _darkMode = false;
 
-  void toggleTheme() {
-    _themeIsDark = !_themeIsDark;
+  /// Getter para verificar se o modo escuro está ativo
+  bool get darkMode => _darkMode;
+
+  /// Retorna o modo de tema atual e sua descrição
+  (ThemeMode, String) get themeMode => _darkMode
+      ? (ThemeMode.dark, 'Modo Escuro')
+      : (ThemeMode.light, 'Modo Claro');
+
+  /// Alterna entre o modo claro e escuro, salvando a preferência no cache
+  Future<void> toggleTheme() async {
+    _darkMode = !_darkMode;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(CacheKeys.lightMode.key, !_darkMode);
     notifyListeners();
   }
 
-  void getTheme() {
-    ThemeMode mode =
-        defaultTargetPlatform == TargetPlatform.iOS ||
-            defaultTargetPlatform == TargetPlatform.android
-        ? ThemeMode.system
-        : ThemeMode.light;
-    if (mode == ThemeMode.dark) {
-      _themeIsDark = true;
+  /// Carrega a preferência de tema salvo no cache ou usa o tema atual do sistema
+  Future<void> getTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? mode = prefs.getBool(CacheKeys.lightMode.key);
+    if (mode != null) {
+      if (mode) {
+        _darkMode = false;
+      } else {
+        _darkMode = true;
+      }
     } else {
       Brightness brightness =
           WidgetsBinding.instance.platformDispatcher.platformBrightness;
       if (brightness == Brightness.dark) {
-        _themeIsDark = true;
+        _darkMode = true;
       } else {
-        _themeIsDark = false;
+        _darkMode = false;
       }
     }
     notifyListeners();

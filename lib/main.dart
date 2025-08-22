@@ -9,6 +9,5 @@ Future<void> main() async {
   /// Carrega a SharedPreferences antes de iniciar o app
   await SharedPreferences.getInstance();
 
-  /// Inicia o aplicativo principal
   runApp(const MainApp());
 }
