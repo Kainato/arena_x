@@ -18,8 +18,8 @@ class _RedirectState extends State<Redirect> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_started) {
-      // Chama o bootstrap assim que o Provider estiver disponível
-      context.read<GameState>().bootstrap();
+      // ignore: use_build_context_synchronously
+      Future.microtask(() => context.read<GameState>().bootstrap());
       _started = true;
     }
   }

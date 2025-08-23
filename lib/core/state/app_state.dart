@@ -1,11 +1,14 @@
-import 'package:arena_x/core/enum/cache_keys.dart';
+import 'package:arena_x/core/box/settings_box.dart';
+import 'package:arena_x/core/extension/hive_extension.dart';
+import 'package:arena_x/core/extension/material_color_extension.dart';
+import 'package:arena_x/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppState extends ChangeNotifier {
   /// Inicializa o estado do aplicativo e carrega as preferências salvas
   AppState() {
-    getTheme();
+    getThemeMode();
+    getThemeColor();
   }
 
   /// Variável para controlar o modo de tema (claro/escuro)
@@ -22,21 +25,22 @@ class AppState extends ChangeNotifier {
   /// Alterna entre o modo claro e escuro, salvando a preferência no cache
   Future<void> toggleTheme() async {
     _darkMode = !_darkMode;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(CacheKeys.lightMode.key, !_darkMode);
+    await HiveExtension.putBool(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.darkMode.boxKey,
+      value: _darkMode,
+    );
     notifyListeners();
   }
 
   /// Carrega a preferência de tema salvo no cache ou usa o tema atual do sistema
-  Future<void> getTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? mode = prefs.getBool(CacheKeys.lightMode.key);
-    if (mode != null) {
-      if (mode) {
-        _darkMode = false;
-      } else {
-        _darkMode = true;
-      }
+  Future<void> getThemeMode() async {
+    bool? darkModeFromCache = await HiveExtension.getBoolNullable(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.darkMode.boxKey,
+    );
+    if (darkModeFromCache != null) {
+      _darkMode = darkModeFromCache;
     } else {
       Brightness brightness =
           WidgetsBinding.instance.platformDispatcher.platformBrightness;
@@ -49,12 +53,37 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  MaterialColor _primaryColor = Colors.teal;
+  /// Obtém a cor primária salva no cache ou usa a cor padrão
+  Future<void> getThemeColor() async {
+    final int colorValue = await HiveExtension.getInt(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.primaryColor.boxKey,
+      defaultValue: Colors.purple.toInt,
+    );
+    // Procura na lista de cores disponíveis
+    final MaterialColor found = materialColors.firstWhere(
+      (mc) => mc.toInt == colorValue,
+    );
+    _primaryColor = found;
+    notifyListeners();
+  }
+
+  MaterialColor _primaryColor = Colors.purple;
 
   MaterialColor get primaryColor => _primaryColor;
 
-  void setPrimaryColor(MaterialColor color) {
+  List<MaterialColor> get materialColors => AppTheme(this).materialColors;
+
+  void changePrimaryColor(MaterialColor color) {
     _primaryColor = color;
     notifyListeners();
+  }
+
+  Future<void> setPrimaryColor() async {
+    await HiveExtension.putInt(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.primaryColor.boxKey,
+      value: _primaryColor.toInt,
+    );
   }
 }
