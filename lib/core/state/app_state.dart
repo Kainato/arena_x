@@ -1,8 +1,8 @@
-import 'package:arena_x/core/enum/box_cache_keys.dart';
-import 'package:arena_x/core/enum/cache_keys.dart';
+import 'package:arena_x/core/box/settings_box.dart';
+import 'package:arena_x/core/extension/hive_extension.dart';
+import 'package:arena_x/core/extension/material_color_extension.dart';
 import 'package:arena_x/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
 class AppState extends ChangeNotifier {
   /// Inicializa o estado do aplicativo e carrega as preferências salvas
@@ -25,21 +25,22 @@ class AppState extends ChangeNotifier {
   /// Alterna entre o modo claro e escuro, salvando a preferência no cache
   Future<void> toggleTheme() async {
     _darkMode = !_darkMode;
-    final Box appBox = Hive.box(BoxCacheKeys.app.id);
-    await appBox.put(CacheKeys.lightMode.key, !_darkMode);
+    await HiveExtension.putBool(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.darkMode.boxKey,
+      value: _darkMode,
+    );
     notifyListeners();
   }
 
   /// Carrega a preferência de tema salvo no cache ou usa o tema atual do sistema
   Future<void> getThemeMode() async {
-    final Box appBox = Hive.box(BoxCacheKeys.app.id);
-    bool? mode = appBox.get(CacheKeys.lightMode.key);
-    if (mode != null) {
-      if (mode) {
-        _darkMode = false;
-      } else {
-        _darkMode = true;
-      }
+    bool? darkModeFromCache = await HiveExtension.getBoolNullable(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.darkMode.boxKey,
+    );
+    if (darkModeFromCache != null) {
+      _darkMode = darkModeFromCache;
     } else {
       Brightness brightness =
           WidgetsBinding.instance.platformDispatcher.platformBrightness;
@@ -54,16 +55,16 @@ class AppState extends ChangeNotifier {
 
   /// Obtém a cor primária salva no cache ou usa a cor padrão
   Future<void> getThemeColor() async {
-    final Box appBox = Hive.box(BoxCacheKeys.app.id);
-    final int? colorValue = appBox.get(CacheKeys.primaryColor.key);
-    if (colorValue != null) {
-      // Procura na lista de cores disponíveis
-      final found = materialColors.firstWhere(
-        (mc) => mc.value == colorValue,
-        orElse: () => Colors.purple,
-      );
-      _primaryColor = found;
-    }
+    final int colorValue = await HiveExtension.getInt(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.primaryColor.boxKey,
+      defaultValue: Colors.purple.toInt,
+    );
+    // Procura na lista de cores disponíveis
+    final MaterialColor found = materialColors.firstWhere(
+      (mc) => mc.toInt == colorValue,
+    );
+    _primaryColor = found;
     notifyListeners();
   }
 
@@ -79,9 +80,10 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> setPrimaryColor() async {
-    await Hive.openBox(BoxCacheKeys.app.id);
-    final Box appBox = Hive.box(BoxCacheKeys.app.id);
-    await appBox.put(CacheKeys.primaryColor.key, _primaryColor.value);
-    appBox.close();
+    await HiveExtension.putInt(
+      boxName: SettingsBox.id.boxName,
+      key: SettingsBox.primaryColor.boxKey,
+      value: _primaryColor.toInt,
+    );
   }
 }

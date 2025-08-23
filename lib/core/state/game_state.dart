@@ -1,13 +1,12 @@
 import 'dart:async';
 
+import 'package:arena_x/core/box/player_box.dart';
+import 'package:arena_x/core/extension/hive_extension.dart';
 import 'package:arena_x/core/state/battle_state.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/battle_read.dart';
-import '../enum/box_cache_keys.dart';
-import '../enum/cache_keys.dart';
 import '../enum/item_type.dart';
 import '../models/item.dart';
 import '../models/player.dart';
@@ -26,26 +25,57 @@ class GameState extends ChangeNotifier {
   Future<void> bootstrap() async {
     // Inicia o estado de carregamento do jogo
     changeLoadingGame(value: true);
-    // Carrega o estado do jogador do cache
-    final Box playerBox = Hive.box(BoxCacheKeys.player.id);
-    // Placeholder de usuário local — trocável por Firebase Auth + Firestore
+
+    // Placeholder de usuário local
     player = Player(
       id: 'local',
-      name: playerBox.get(CacheKeys.jogador.key) ?? CacheKeys.jogador.key,
-      level: playerBox.get(CacheKeys.nivel.key) ?? 1,
-      xp: playerBox.get(CacheKeys.xp.key) ?? 0,
-      gold: playerBox.get(CacheKeys.ouro.key) ?? 50,
+      name: await HiveExtension.getString(
+        boxName: PlayerBox.id.boxName,
+        key: PlayerBox.jogador.boxKey,
+        defaultValue: 'Aventureiro',
+      ),
+      level: await HiveExtension.getInt(
+        boxName: PlayerBox.id.boxName,
+        key: PlayerBox.nivel.boxKey,
+        defaultValue: 1,
+      ),
+      xp: await HiveExtension.getInt(
+        boxName: PlayerBox.id.boxName,
+        key: PlayerBox.xp.boxKey,
+        defaultValue: 0,
+      ),
+      gold: await HiveExtension.getInt(
+        boxName: PlayerBox.id.boxName,
+        key: PlayerBox.ouro.boxKey,
+        defaultValue: 0,
+      ),
     );
     // Nome do jogador
-    playerBox.put(CacheKeys.jogador.key, player.name);
+    HiveExtension.putString(
+      boxName: PlayerBox.id.boxName,
+      key: PlayerBox.jogador.boxKey,
+      value: player.name,
+    );
     // Prepara o controlador de texto para o nome do jogador
     playerNameController.text = player.name;
     // Nível do jogador
-    playerBox.put(CacheKeys.nivel.key, player.level);
+    HiveExtension.putInt(
+      boxName: PlayerBox.id.boxName,
+      key: PlayerBox.nivel.boxKey,
+      value: player.level,
+    );
     // XP do jogador
-    playerBox.put(CacheKeys.xp.key, player.xp);
+    HiveExtension.putInt(
+      boxName: PlayerBox.id.boxName,
+      key: PlayerBox.xp.boxKey,
+      value: player.xp,
+    );
     // Ouro do jogador
-    playerBox.put(CacheKeys.ouro.key, player.gold);
+    HiveExtension.putInt(
+      boxName: PlayerBox.id.boxName,
+      key: PlayerBox.ouro.boxKey,
+      value: player.gold,
+    );
     // Finaliza o estado de carregamento do jogo
     changeLoadingGame(value: false);
     // Notifica os ouvintes sobre a mudança de estado
@@ -64,34 +94,16 @@ class GameState extends ChangeNotifier {
   /// Controlador de texto para o nome do jogador
   TextEditingController playerNameController = TextEditingController();
 
-  /// Se o nome não for nulo e não estiver vazio, define o controlador de texto
-  /// Caso contrário, define um nome padrão
-  ///
-  /// Isso garante que o nome do jogador seja carregado corretamente na interface
-  /// e evita que o campo fique vazio.
-  Future<void> getPlayerName() async {
-    // Carrega o estado do jogador do cache
-    final Box playerBox = Hive.box(BoxCacheKeys.player.id);
-    // Carrega o nome do jogador do cache
-    String? name = playerBox.get(CacheKeys.jogador.key);
-
-    // Se o nome não for nulo e não estiver vazio, define o controlador de texto
-    // Caso contrário, define um nome padrão
-    if (name != null && name.isNotEmpty) {
-      playerNameController.text = name;
-    } else {
-      playerNameController.text = CacheKeys.jogador.key;
-    }
-  }
-
   /// Define o nome do jogador e salva no cache
   Future<void> setPlayerName(String name) async {
-    // Carrega o estado do jogador do cache
-    final Box playerBox = Hive.box(BoxCacheKeys.player.id);
     // Altera o nome do objeto do jogador
     player.name = name;
     // Salva o nome no cache
-    playerBox.put(CacheKeys.jogador.key, name);
+    HiveExtension.putString(
+      boxName: PlayerBox.id.boxName,
+      key: PlayerBox.jogador.boxKey,
+      value: name,
+    );
     // Notifica os ouvintes sobre a mudança
     notifyListeners();
   }

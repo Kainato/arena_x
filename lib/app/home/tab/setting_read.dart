@@ -48,7 +48,6 @@ class SettingRead extends StatelessWidget {
                     if (value.trim().isNotEmpty) {
                       g.setPlayerName(value);
                     } else {
-                      g.getPlayerName();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
